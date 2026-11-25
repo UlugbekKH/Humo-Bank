@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Қарз бо танҳо як шиноснома</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F2A43;
+  --bg:#F3F6F8;
+  --surface:#FFFFFF;
+  --text:#14212E;
+  --muted:#58687A;
+  --line:#D5DDE3;
+  --saffron:#F2A900;
+  --saffron-ink:#2B1D00;
+  --serif:'Noto Serif','PT Serif',Georgia,serif;
+  --sans:'Noto Sans','PT Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ink:#0A1827;
+    --bg:#0C1A29;
+    --surface:#13273B;
+    --text:#E8EEF3;
+    --muted:#9DB0C2;
+    --line:#26405A;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;font-size:16px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* ---------- Hero band (always dark blue) ---------- */
+.band{background:var(--ink);color:#fff}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;flex-wrap:wrap}
+.who{display:flex;flex-direction:column;line-height:1.25}
+.who strong{font-family:var(--serif);font-size:1.05rem}
+.who span{font-size:.85rem;color:#B7C6D6}
+.nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.nav a{text-decoration:none;font-size:.95rem;color:#D6E0EA}
+.nav a:hover{color:#fff;text-decoration:underline}
+.lang{display:flex;border:1px solid #3A5875;border-radius:8px;overflow:hidden}
+.lang button{font:inherit;font-size:.85rem;font-weight:600;background:transparent;color:#D6E0EA;border:0;padding:6px 12px;cursor:pointer}
+.lang button+button{border-left:1px solid #3A5875}
+.lang button[aria-pressed="true"]{background:var(--saffron);color:var(--saffron-ink)}
+
+.hero{display:grid;gap:36px;padding:40px 0 56px;align-items:start}
+@media (min-width:920px){.hero{grid-template-columns:1fr 480px;gap:56px;padding:64px 0 72px}}
+.hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.1rem,5.4vw,3.6rem);line-height:1.12;letter-spacing:-.01em;max-width:14em}
+.hero p{margin-top:20px;font-size:1.1rem;color:#C9D6E3;max-width:34em}
+.btn{display:inline-block;margin-top:28px;background:var(--saffron);color:var(--saffron-ink);font-weight:600;text-decoration:none;padding:13px 24px;border-radius:8px}
+.btn:hover{filter:brightness(1.06)}
+
+/* ---------- Calculator ---------- */
+.calc{background:var(--surface);color:var(--text);border-radius:14px;padding:24px;border:1px solid var(--line)}
+.calc h2{font-family:var(--serif);font-size:1.3rem;margin-bottom:18px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.9rem;font-weight:500;color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.val{font-weight:600;font-variant-numeric:tabular-nums}
+select,input[type=number]{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+input[type=range]{width:100%;accent-color:var(--saffron);margin-top:8px}
+.result{margin-top:6px;padding-top:18px;border-top:1px solid var(--line)}
+.result .big-l{font-size:.9rem;color:var(--muted)}
+.result .big{font-family:var(--serif);font-weight:700;font-size:clamp(1.9rem,6vw,2.5rem);line-height:1.2;font-variant-numeric:tabular-nums}
+.result .big small{font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--muted)}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.mini div span{display:block;font-size:.82rem;color:var(--muted)}
+.mini div b{font-variant-numeric:tabular-nums}
+.deposit{margin-top:16px;padding:12px 14px;border-left:3px solid var(--saffron);background:var(--bg);border-radius:0 8px 8px 0;font-size:.9rem}
+.deposit b{font-variant-numeric:tabular-nums}
+.note{margin-top:14px;font-size:.8rem;color:var(--muted)}
+
+/* ---------- Schedule (always visible) ---------- */
+.schedule{padding-top:48px}
+.schedule h2,section.block h2{font-family:var(--serif);font-size:clamp(1.6rem,3.6vw,2.2rem);margin-bottom:20px}
+.tbl{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:9px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{color:var(--muted);font-weight:500;background:var(--bg)}
+tbody tr:last-child td{border-bottom:0}
+tfoot td{font-weight:600;border-top:2px solid var(--line);border-bottom:0;background:var(--bg)}
+
+/* ---------- Sections ---------- */
+section.block{padding:64px 0 0}
+.terms{list-style:none;border-top:1px solid var(--line)}
+.terms li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line)}
+.terms .l{color:var(--muted);font-size:1rem}
+.terms .l small{display:block;font-size:.85rem}
+.terms .v{font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,3.4vw,1.8rem)}
+
+.steps{list-style:none;display:grid;gap:28px;counter-reset:s}
+@media (min-width:820px){.steps{grid-template-columns:repeat(3,1fr);gap:36px}}
+.steps li{counter-increment:s;border-top:3px solid var(--saffron);padding-top:14px}
+.steps li::before{content:counter(s);font-family:var(--serif);font-weight:700;font-size:1.6rem;display:block}
+.steps h3{font-size:1.1rem;margin:4px 0 6px}
+.steps p{color:var(--muted)}
+
+.contacts{display:grid;gap:12px;max-width:560px}
+.contacts .c{display:flex;justify-content:space-between;gap:16px;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.contacts a.c:hover{border-color:var(--saffron)}
+.contacts .c span{color:var(--muted)}
+.contacts .c b{font-weight:600;text-align:right}
+.lead{color:var(--muted);margin-bottom:20px;max-width:36em}
+
+footer{margin-top:72px;border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+
+<div class="band">
+  <div class="wrap">
+    <header class="top">
+      <div class="who">
+        <strong data-i="name"></strong>
+        <span data-i="role"></span>
+      </div>
+      <div class="nav">
+        <a href="#terms" data-i="nav_terms"></a>
+        <a href="#steps" data-i="nav_steps"></a>
+        <a href="#contact" data-i="nav_contact"></a>
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="tj" aria-pressed="true">TJ</button>
+          <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+          <button type="button" data-lang="uz" aria-pressed="false">UZ</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div>
+        <h1 data-i="hero_title"></h1>
+        <p data-i="hero_text"></p>
+        <a class="btn" href="#contact" data-i="cta_contact"></a>
+      </div>
+
+      <div class="calc" id="calc">
+        <h2 data-i="calc_title"></h2>
+
+        <div class="field">
+          <div class="row">
+            <label for="amountNum" data-i="f_amount"></label>
+            <span class="val" id="amountOut"></span>
+          </div>
+          <input type="range" id="amountRange" aria-label="Amount">
+          <input type="number" id="amountNum" inputmode="numeric" style="margin-top:8px">
+        </div>
+
+        <div class="field">
+          <div class="row">
+            <label for="termRange" data-i="f_term"></label>
+            <span class="val" id="termOut"></span>
+          </div>
+          <input type="range" id="termRange">
+        </div>
+
+        <div class="field">
+          <label for="ptype" data-i="f_type" style="margin-bottom:6px"></label>
+          <select id="ptype">
+            <option value="ann" data-i="t_ann"></option>
+            <option value="diff" data-i="t_diff"></option>
+          </select>
+        </div>
+
+        <div class="result" aria-live="polite">
+          <div class="big-l" id="payLabel"></div>
+          <div class="big" id="payOut"></div>
+          <div class="mini">
+            <div><span data-i="r_total"></span><b id="totalOut"></b></div>
+            <div><span data-i="r_over"></span><b id="overOut"></b></div>
+          </div>
+          <div class="deposit">
+            <span data-i="r_dep"></span> <b id="depOut"></b><br>
+            <span data-i="dep_note"></span>
+          </div>
+        </div>
+
+        <p class="note" data-i="calc_note"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="schedule" id="schedule">
+    <h2 data-i="sched_title"></h2>
+    <div class="tbl">
+      <table>
+        <thead><tr>
+          <th data-i="th_n"></th><th data-i="th_pr"></th><th data-i="th_int"></th><th data-i="th_pay"></th><th data-i="th_bal"></th>
+        </tr></thead>
+        <tbody id="sched"></tbody>
+        <tfoot id="schedFoot"></tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section class="block" id="terms">
+    <h2 data-i="terms_title"></h2>
+    <ul class="terms">
+      <li><span class="l" data-i="term1_l"></span><span class="v" data-i="term1_v"></span></li>
+      <li><span class="l" data-i="term2_l"></span><span class="v" data-i="term2_v"></span></li>
+      <li><span class="l"><span data-i="term3_l"></span><small data-i="term3_d"></small></span><span class="v" data-i="term3_v"></span></li>
+      <li><span class="l" data-i="term4_l"></span><span class="v" data-i="term4_v"></span></li>
+      <li><span class="l" data-i="term5_l"></span><span class="v" data-i="term5_v"></span></li>
+    </ul>
+  </section>
+
+  <section class="block" id="steps">
+    <h2 data-i="steps_title"></h2>
+    <ol class="steps">
+      <li><h3 data-i="s1_t"></h3><p data-i="s1_d"></p></li>
+      <li><h3 data-i="s2_t"></h3><p data-i="s2_d"></p></li>
+      <li><h3 data-i="s3_t"></h3><p data-i="s3_d"></p></li>
+    </ol>
+  </section>
+
+  <section class="block" id="contact">
+    <h2 data-i="contact_title"></h2>
+    <p class="lead" data-i="contact_text"></p>
+    <div class="contacts">
+      <a class="c" id="phoneLink" href="#"><span data-i="lbl_phone"></span><b id="phoneText"></b></a>
+      <a class="c" id="waLink" href="#" target="_blank" rel="noopener"><span>WhatsApp</span><b id="waText"></b></a>
+      <a class="c" id="tgLink" href="#" target="_blank" rel="noopener"><span>Telegram</span><b id="tgText"></b></a>
+      <div class="c"><span data-i="lbl_addr"></span><b data-i="addr"></b></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" data-i="footer"></div>
+</footer>
+
+<script>
+/* =====================================================
+   ТАНЗИМОТ / SOZLAMALAR — change only this block
+   ===================================================== */
+const CONFIG = {
+  phone: "+992 073 167 337",      // phone and WhatsApp (shown on the site)
+  phoneDigits: "992073167337",    // same number, digits only (for links)
+  telegram: "Xotamovoff",         // Telegram username without @
+  amount: { min: 1000, max: 100000, step: 500, def: 10000 },  // in somoni
+  term:   { min: 1, max: 60, def: 12 },                        // months
+  rateMonthly: 2.08,              // % per month
+  depositPct: 10                  // % of the loan held by the bank as collateral
+};
+
+const I18N = {
+  tj: {
+    name:"Хотамов Улуғбек",
+    meta_title:"Қарз бо танҳо як шиноснома | Хотамов Улуғбек, Humo Bank",
+    role:"Мутахассиси Humo Bank",
+    nav_terms:"Шартҳо", nav_steps:"Тартиб", nav_contact:"Тамос",
+    hero_title:"Қарз бо танҳо як шиноснома",
+    hero_text:"Фоиз — 2,08% дар як моҳ, мӯҳлат то 60 моҳ. Барои гирифтани қарз танҳо шиноснома лозим аст. Имтиёз барои кишоварзон ва чорводорон.",
+    cta_contact:"Тамос гирифтан",
+    calc_title:"Калкулятори қарз",
+    f_amount:"Маблағи қарз", f_term:"Мӯҳлат", f_type:"Намуди пардохт",
+    t_ann:"Аннуитетӣ (баробар)", t_diff:"Дифференсиалӣ (камшаванда)",
+    unit_month:"моҳ", cur:"сомонӣ",
+    r_monthly:"Пардохти моҳона", r_first:"Пардохти аввалин",
+    r_total:"Маблағи умумии баргардонӣ", r_over:"Фоизҳо дар маҷмӯъ",
+    r_dep:"Гарави пулӣ (10%):",
+    dep_note:"Ин маблағ дар бонк мемонад ва баъди пардохти пурраи қарз ба шумо баргардонида мешавад.",
+    sched_title:"Ҷадвали пардохтҳо",
+    th_n:"Моҳ", th_pr:"Қарзи асосӣ", th_int:"Фоиз", th_pay:"Пардохт", th_bal:"Бақия", th_total:"Ҳамагӣ",
+    calc_note:"Ҳисоб тахминӣ аст. Шартҳои дақиқро мутахассис тасдиқ мекунад.",
+    terms_title:"Шартҳои қарз",
+    term1_l:"Фоиз", term1_v:"2,08% дар як моҳ",
+    term2_l:"Мӯҳлат", term2_v:"То 60 моҳ",
+    term3_l:"Гарави пулӣ", term3_d:"Баъди пардохти пурра баргардонида мешавад", term3_v:"10% аз маблағи қарз",
+    term4_l:"Ҳуҷҷатҳо", term4_v:"Танҳо шиноснома",
+    term5_l:"Имтиёз барои", term5_v:"Кишоварзон ва чорводорон",
+    steps_title:"Тартиби гирифтани қарз",
+    s1_t:"Тамос гиред", s1_d:"Занг занед ё дар Telegram ва WhatsApp нависед. Маблағ ва мӯҳлати дилхоҳро номбар кунед.",
+    s2_t:"Шиносномаро биёред", s2_d:"Ба ғайр аз шиноснома ҳуҷҷати дигар лозим нест.",
+    s3_t:"Ҷавоб гиред", s3_d:"Дархостро баррасӣ карда, шартҳои дақиқро ба шумо шарҳ медиҳам.",
+    contact_title:"Тамос",
+    contact_text:"Савол доред? Занг занед ё нависед — ёрӣ медиҳам.",
+    lbl_phone:"Телефон", lbl_addr:"Суроға",
+    addr:"Бонк, ноҳияи Зафаробод, бинои «Шамс»",
+    footer:"Ин сайти шахсии мутахассис аст ва сайти расмии бонк нест. Маълумот хусусияти иттилоотӣ дорад."
+  },
+  ru: {
+    name:"Хотамов Улугбек",
+    meta_title:"Кредит по одному паспорту | Хотамов Улугбек, Humo Bank",
+    role:"Специалист Humo Bank",
+    nav_terms:"Условия", nav_steps:"Порядок", nav_contact:"Контакты",
+    hero_title:"Кредит по одному паспорту",
+    hero_text:"Ставка 2,08% в месяц, срок до 60 месяцев. Для оформления кредита нужен только паспорт. Льготы для фермеров и животноводов.",
+    cta_contact:"Связаться",
+    calc_title:"Кредитный калькулятор",
+    f_amount:"Сумма кредита", f_term:"Срок", f_type:"Тип платежей",
+    t_ann:"Аннуитетный (равными платежами)", t_diff:"Дифференцированный (убывающий)",
+    unit_month:"мес.", cur:"сомони",
+    r_monthly:"Ежемесячный платёж", r_first:"Первый платёж",
+    r_total:"Общая сумма выплат", r_over:"Сумма процентов",
+    r_dep:"Денежный залог (10%):",
+    dep_note:"Эта сумма остаётся в банке и возвращается вам после полного погашения кредита.",
+    sched_title:"График платежей",
+    th_n:"Мес.", th_pr:"Основной долг", th_int:"Проценты", th_pay:"Платёж", th_bal:"Остаток", th_total:"Итого",
+    calc_note:"Расчёт ориентировочный. Точные условия подтверждает специалист.",
+    terms_title:"Условия кредита",
+    term1_l:"Ставка", term1_v:"2,08% в месяц",
+    term2_l:"Срок", term2_v:"До 60 месяцев",
+    term3_l:"Денежный залог", term3_d:"Возвращается после полного погашения", term3_v:"10% от суммы кредита",
+    term4_l:"Документы", term4_v:"Только паспорт",
+    term5_l:"Льготы для", term5_v:"Фермеров и животноводов",
+    steps_title:"Как получить кредит",
+    s1_t:"Свяжитесь со мной", s1_d:"Позвоните или напишите в Telegram и WhatsApp. Назовите нужную сумму и срок.",
+    s2_t:"Подготовьте паспорт", s2_d:"Кроме паспорта, другие документы не нужны.",
+    s3_t:"Получите ответ", s3_d:"Заявка будет рассмотрена, а я объясню вам точные условия.",
+    contact_title:"Контакты",
+    contact_text:"Есть вопросы? Позвоните или напишите — помогу.",
+    lbl_phone:"Телефон", lbl_addr:"Адрес",
+    addr:"Банк, район Зафарабад, здание «Шамс»",
+    footer:"Это личный сайт специалиста, а не официальный сайт банка. Информация носит справочный характер."
+  },
+  uz: {
+    name:"Xotamov Ulug'bek",
+    meta_title:"Faqat pasport bilan kredit | Xotamov Ulug'bek, Humo Bank",
+    role:"Humo Bank mutaxassisi",
+    nav_terms:"Shartlar", nav_steps:"Tartib", nav_contact:"Aloqa",
+    hero_title:"Faqat bitta pasport bilan kredit",
+    hero_text:"Oyiga 2,08%, muddati 60 oygacha. Kredit olish uchun faqat pasport kerak. Dehqonlar va chorvadorlar uchun imtiyoz.",
+    cta_contact:"Bog'lanish",
+    calc_title:"Kredit kalkulyatori",
+    f_amount:"Kredit summasi", f_term:"Muddat", f_type:"To'lov turi",
+    t_ann:"Annuitet (teng to'lovlar)", t_diff:"Differensial (kamayib boruvchi)",
+    unit_month:"oy", cur:"somoniy",
+    r_monthly:"Oylik to'lov", r_first:"Birinchi to'lov",
+    r_total:"Jami to'lov summasi", r_over:"Foizlar summasi",
+    r_dep:"Pul garovi (10%):",
+    dep_note:"Bu summa bankda qoladi va kredit to'liq to'langanidan keyin sizga qaytariladi.",
+    sched_title:"To'lov jadvali",
+    th_n:"Oy", th_pr:"Asosiy qarz", th_int:"Foiz", th_pay:"To'lov", th_bal:"Qoldiq", th_total:"Jami",
+    calc_note:"Hisob-kitob taxminiy. Aniq shartlarni mutaxassis tasdiqlaydi.",
+    terms_title:"Kredit shartlari",
+    term1_l:"Stavka", term1_v:"Oyiga 2,08%",
+    term2_l:"Muddat", term2_v:"60 oygacha",
+    term3_l:"Pul garovi", term3_d:"To'liq to'langanidan keyin qaytariladi", term3_v:"Kredit summasining 10%i",
+    term4_l:"Hujjatlar", term4_v:"Faqat pasport",
+    term5_l:"Imtiyoz kimlar uchun", term5_v:"Dehqonlar va chorvadorlar",
+    steps_title:"Kreditni qanday olish mumkin",
+    s1_t:"Men bilan bog'laning", s1_d:"Qo'ng'iroq qiling yoki Telegram va WhatsApp'da yozing. Kerakli summa va muddatni ayting.",
+    s2_t:"Pasportni tayyorlang", s2_d:"Pasportdan boshqa hujjat kerak emas.",
+    s3_t:"Javob oling", s3_d:"Arizangizni ko'rib chiqib, aniq shartlarni tushuntiraman.",
+    contact_title:"Aloqa",
+    contact_text:"Savollaringiz bormi? Qo'ng'iroq qiling yoki yozing — yordam beraman.",
+    lbl_phone:"Telefon", lbl_addr:"Manzil",
+    addr:"Bank, Zafarobod tumani, «Shams» binosi",
+    footer:"Bu mutaxassisning shaxsiy sayti, bankning rasmiy sayti emas. Ma'lumotlar axborot xarakteriga ega."
+  }
+};
+
+let lang = "tj";
+try { const s = localStorage.getItem("lang"); if (s && I18N[s]) lang = s; } catch (e) {}
+
+const $ = id => document.getElementById(id);
+const t = k => I18N[lang][k];
+const fmtInt = n => Math.round(n).toLocaleString("ru-RU");
+const fmt = n => n.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const amountRange = $("amountRange"), amountNum = $("amountNum"), termRange = $("termRange"), ptype = $("ptype");
+
+amountRange.min = CONFIG.amount.min; amountRange.max = CONFIG.amount.max; amountRange.step = CONFIG.amount.step;
+amountRange.value = CONFIG.amount.def; amountNum.value = CONFIG.amount.def;
+termRange.min = CONFIG.term.min; termRange.max = CONFIG.term.max; termRange.step = 1; termRange.value = CONFIG.term.def;
+
+function clampAmount(v) {
+  v = Number(v) || CONFIG.amount.min;
+  return Math.min(CONFIG.amount.max, Math.max(CONFIG.amount.min, v));
+}
+
+function calculate() {
+  const P = clampAmount(amountNum.value);
+  const n = Number(termRange.value);
+  const r = CONFIG.rateMonthly / 100;
+  const rows = [];
+  let bal = P;
+
+  if (ptype.value === "ann") {
+    const pmt = P * r / (1 - Math.pow(1 + r, -n));
+    for (let i = 1; i <= n; i++) {
+      const interest = bal * r, principal = pmt - interest;
+      bal = Math.max(0, bal - principal);
+      rows.push({ i, principal, interest, pay: pmt, bal });
+    }
+  } else {
+    const principal = P / n;
+    for (let i = 1; i <= n; i++) {
+      const interest = bal * r;
+      bal = Math.max(0, bal - principal);
+      rows.push({ i, principal, interest, pay: principal + interest, bal });
+    }
+  }
+
+  const total = rows.reduce((s, x) => s + x.pay, 0);
+  const interestSum = rows.reduce((s, x) => s + x.interest, 0);
+  const cur = t("cur");
+
+  $("amountOut").textContent = fmtInt(P) + " " + cur;
+  $("termOut").textContent = n + " " + t("unit_month");
+  $("payLabel").textContent = ptype.value === "ann" ? t("r_monthly") : t("r_first");
+  $("payOut").innerHTML = fmt(rows[0].pay) + " <small>" + cur + "</small>";
+  $("totalOut").textContent = fmt(total) + " " + cur;
+  $("overOut").textContent = fmt(total - P) + " " + cur;
+  $("depOut").textContent = fmt(P * CONFIG.depositPct / 100) + " " + cur;
+
+  $("sched").innerHTML = rows.map(x =>
+    "<tr><td>" + x.i + "</td><td>" + fmt(x.principal) + "</td><td>" + fmt(x.interest) +
+    "</td><td>" + fmt(x.pay) + "</td><td>" + fmt(x.bal) + "</td></tr>").join("");
+  $("schedFoot").innerHTML =
+    "<tr><td>" + t("th_total") + "</td><td>" + fmt(P) + "</td><td>" + fmt(interestSum) +
+    "</td><td>" + fmt(total) + "</td><td></td></tr>";
+}
+
+function applyLang() {
+  document.documentElement.lang = lang === "tj" ? "tg" : lang;
+  document.title = t("meta_title");
+  document.querySelectorAll("[data-i]").forEach(el => { el.textContent = t(el.dataset.i); });
+  document.querySelectorAll("[data-lang]").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false"));
+  calculate();
+}
+
+document.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => {
+  lang = b.dataset.lang;
+  try { localStorage.setItem("lang", lang); } catch (e) {}
+  applyLang();
+}));
+
+amountRange.addEventListener("input", () => { amountNum.value = amountRange.value; calculate(); });
+amountNum.addEventListener("input", () => { amountRange.value = clampAmount(amountNum.value); calculate(); });
+amountNum.addEventListener("change", () => { amountNum.value = clampAmount(amountNum.value); amountRange.value = amountNum.value; calculate(); });
+termRange.addEventListener("input", calculate);
+ptype.addEventListener("change", calculate);
+
+// Contacts
+$("phoneText").textContent = CONFIG.phone;
+$("phoneLink").href = "tel:+" + CONFIG.phoneDigits;
+$("waText").textContent = CONFIG.phone;
+$("waLink").href = "https://wa.me/" + CONFIG.phoneDigits;
+$("tgText").textContent = "@" + CONFIG.telegram;
+$("tgLink").href = "https://t.me/" + CONFIG.telegram;
+
+applyLang();
+</script>
+</body>
+</html>
